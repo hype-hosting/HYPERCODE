@@ -136,27 +136,13 @@
             "forbid_overrides": false
         },
         {
-            "identifier": "0e832d05-cac2-4b3a-85ce-65a94c7981c0",
-            "system_prompt": false,
-            "enabled": false,
-            "marker": false,
-            "name": "Bookend (do not disable)",
-            "role": "system",
-            "content": "[=== END LORE CONTEXT SCAFFOLD ===]",
-            "injection_position": 0,
-            "injection_depth": 4,
-            "injection_order": 100,
-            "injection_trigger": [],
-            "forbid_overrides": false
-        },
-        {
             "identifier": "07e3cd0e-2422-4fc9-ab63-e4c6bcd6b7bb",
             "system_prompt": false,
             "enabled": false,
             "marker": false,
             "name": "➡️ Chat Lore [Outlet: LTM]",
             "role": "system",
-            "content": "[=== BEGIN ESSENTIAL ROLEPLAY SUMMARY CONTEXT ===]\n\nThe following are events that have already occurred and should be treated as having happened in the past:\n\n{{outlet::LTM}}\n\n[=== END ESSENTIAL ROLEPLAY SUMMARY CONTEXT ===]",
+            "content": "[=== END LORE CONTEXT SCAFFOLD ===]\n\n[=== BEGIN ESSENTIAL ROLEPLAY SUMMARY CONTEXT ===]\n\nThe following are events that have already occurred and should be treated as having happened in the past:\n\n{{outlet::LTM}}\n\n[=== END ESSENTIAL ROLEPLAY SUMMARY CONTEXT ===]",
             "injection_position": 0,
             "injection_depth": 4,
             "injection_order": 100,
