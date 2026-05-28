@@ -119,24 +119,23 @@ Outlets are optional. An unwired Outlet renders as inert — the stack continues
 **Tip:** One per world. Keep it under ~1000 tokens. Use headed sections (Setting, Premise, Atmosphere, Themes, etc.) rather than freeform paragraphs.
 
 ### `persona`
-**What it's for:** Lore specific to the user's persona — backstory, relationships, identity details, anything the model should know about *who the user is* in this world.
+**What it's for:** Additional lore specific to the user's persona — backstory, relationships, identity details, anything the model should know about *who the user is* in this world.
 **Where it lands:** Right after the standard Persona Description block, allowing layered persona context.
-**Tip:** Keep flexible — many users swap personas across characters. Bind this to specific personas via SillyTavern's persona lorebook binding if needed.
+**Tip:** This is useful if you have larger persona lorebooks you keep attached to your user personas. Use the `persona` outlet for each entry in your persona lorebook and it'll keep these entries arranged in a logical section of the prompt stack.
 
 ### `LTM`
 **What it's for:** Long-term memory — summaries of past events, established relationships, prior scenes the model should treat as history. The "previously, on this story" injection.
 **Where it lands:** Just before chat history, framed by the Preset as established past events.
-**Tip:** Use a summary extension or update manually as scenes accumulate. Truncate aggressively.
+**Tip:** Use a summary extension or use manual summaries to populate a Chat Lore Lorebook. Set your Chat Lore Lorebook entries to the `LTM` outlet and order them in sequence and they'll fall right into place.
 
 ### `command`
-**What it's for:** Runtime command definitions — `!commands` the user can invoke mid-chat to trigger temporary behavioral modifications (perspective shifts, scene jumps, character swaps, etc.).
+**What it's for:** Runtime command definitions — custom `!` commands you can invoke mid-chat to trigger temporary behavioral modifications (perspective shifts, scene jumps, character swaps, etc.).
 **Where it lands:** Late in the stack, just before NSFW and System Note, so commands are fresh in the model's recent context.
-**Tip:** Use sparingly. One or two well-defined commands beat a dozen forgotten ones.
 
 ### `NSFW`
-**What it's for:** User-supplied custom NSFW rules, kinks, hard limits, or content steering that should override or extend the default Mature Content section in the system prompt.
-**Where it lands:** Depth-4 injection near the end of the stack — high-recency for the model.
-**Note:** The standalone prompt already contains a default Mature Content policy. This Outlet is for **adding** user-specific rules on top of that baseline, not replacing it.
+**What it's for:** User-supplied custom character-specific NSFW rules, kinks, hard limits, or content steering that should override or extend the default Mature Content section in the system prompt.
+**Where it lands:** Near the end of the stack — high-recency for the model.
+**Tip:** You can also set your NSFW preferences or boundaries in persona-bound lorebooks or just a global preferences lorebook. Set the entry to the `NSFW` outlet and the model will get the memo. This is also great for building character lorebooks for characters with specific NSFW definitions. Set those entries in their character lorebook to this outlet and make it keyword triggered to fire at the right time.
 
 ---
 
@@ -176,6 +175,7 @@ HYPERCODE is one piece of a larger ecosystem. If you want to experience what the
 
 ## Other Ways to Connect
 
+- **Wyvern** — [Hyperion](https://app.wyvern.chat/profiles/hyperion) — Check out some of my characters.
 - **Discord** — [Hype Discord](https://discord.gg/therealhype) — Community, support, and access to Timeless Tavern.
 - **Ko-fi** — [ko-fi.com/hype](https://ko-fi.com/hype) — Support the work. Memberships and commissions available.
 - **The Hyperium** — [Substack](https://hyperionblackthorne.substack.com) — Writing, worldbuilding, and studio updates.
