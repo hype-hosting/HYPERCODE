@@ -102,40 +102,40 @@ Outlets are SillyTavern's prompt-injection slots — named hooks the Preset expo
 Outlets are optional. An unwired Outlet renders as inert — the stack continues to work normally. But populating them is where the Preset earns its keep.
 
 ### `CustomSetting`
-**What it's for:** A 1–2 sentence description of your roleplay's setting (where, when, what kind of world). Plain text only — no XML, no markdown headers.
-**Where it lands:** Inside the system prompt's `<Custom_Setting>` block, near the top of the stack.
-**Example content:**
+- **What it's for:** A 1–2 sentence description of your roleplay's setting (where, when, what kind of world). Plain text only — no XML, no markdown headers.
+- **Where it lands:** Inside the system prompt's `<Custom_Setting>` block, near the top of the stack.
+- **Example content:**
 > *The roleplay is set in Ravenwood Estate, Northumberland, England, 1761 — a Gothic castle and revolutionary medical research institution against the backdrop of the Seven Years' War.*
 
 ### `CustomTone`
-**What it's for:** A few sentences describing the prose tone, mood, and atmospheric ground rules you want the model to maintain. Plain text only.
-**Where it lands:** Inside the system prompt's `<Custom_Tone>` block, near the top of the stack.
-**Example content:**
+- **What it's for:** A few sentences describing the prose tone, mood, and atmospheric ground rules you want the model to maintain. Plain text only.
+- **Where it lands:** Inside the system prompt's `<Custom_Tone>` block, near the top of the stack.
+- **Example content:**
 > *Maintain Gothic horror darkness with plausible deniability. Supernatural elements remain ambiguous and psychologically grounded. Horror comes from uncertainty, not spectacle.*
 
 ### `WorldOverview`
-**What it's for:** A full, structured overview of your world — setting, premise, genre, factions, themes, technological limits, etc. This is the high-altitude lore the model needs before scene-level entries fire.
-**Where it lands:** Position #2 in the stack, immediately after the system prompt.
-**Tip:** One per world. Keep it under ~1000 tokens. Use headed sections (Setting, Premise, Atmosphere, Themes, etc.) rather than freeform paragraphs.
+- **What it's for:** A full, structured overview of your world — setting, premise, genre, factions, themes, technological limits, etc. This is the high-altitude lore the model needs before scene-level entries fire.
+- **Where it lands:** Position #2 in the stack, immediately after the system prompt.
+- **Tip:** One per world. Keep it under ~1000 tokens. Use headed sections (Setting, Premise, Atmosphere, Themes, etc.) rather than freeform paragraphs.
 
 ### `persona`
-**What it's for:** Additional lore specific to the user's persona — backstory, relationships, identity details, anything the model should know about *who the user is* in this world.
-**Where it lands:** Right after the standard Persona Description block, allowing layered persona context.
-**Tip:** This is useful if you have larger persona lorebooks you keep attached to your user personas. Use the `persona` outlet for each entry in your persona lorebook and it'll keep these entries arranged in a logical section of the prompt stack.
+- **What it's for:** Additional lore specific to the user's persona — backstory, relationships, identity details, anything the model should know about *who the user is* in this world.
+- **Where it lands:** Right after the standard Persona Description block, allowing layered persona context.
+- **Tip:** This is useful if you have larger persona lorebooks you keep attached to your user personas. Use the `persona` outlet for each entry in your persona lorebook and it'll keep these entries arranged in a logical section of the prompt stack.
 
 ### `LTM`
-**What it's for:** Long-term memory — summaries of past events, established relationships, prior scenes the model should treat as history. The "previously, on this story" injection.
-**Where it lands:** Just before chat history, framed by the Preset as established past events.
-**Tip:** Use a summary extension or use manual summaries to populate a Chat Lore Lorebook. Set your Chat Lore Lorebook entries to the `LTM` outlet and order them in sequence and they'll fall right into place.
+- **What it's for:** Long-term memory — summaries of past events, established relationships, prior scenes the model should treat as history. The "previously, on this story" injection.
+- **Where it lands:** Just before chat history, framed by the Preset as established past events.
+- **Tip:** Use a summary extension or use manual summaries to populate a Chat Lore Lorebook. Set your Chat Lore Lorebook entries to the `LTM` outlet and order them in sequence and they'll fall right into place.
 
 ### `command`
-**What it's for:** Runtime command definitions — custom `!` commands you can invoke mid-chat to trigger temporary behavioral modifications (perspective shifts, scene jumps, character swaps, etc.).
-**Where it lands:** Late in the stack, just before NSFW and System Note, so commands are fresh in the model's recent context.
+- **What it's for:** Runtime command definitions — custom `!` commands you can invoke mid-chat to trigger temporary behavioral modifications (perspective shifts, scene jumps, character swaps, etc.).
+- **Where it lands:** Late in the stack, just before NSFW and System Note, so commands are fresh in the model's recent context.
 
 ### `NSFW`
-**What it's for:** User-supplied custom character-specific NSFW rules, kinks, hard limits, or content steering that should override or extend the default Mature Content section in the system prompt.
-**Where it lands:** Near the end of the stack — high-recency for the model.
-**Tip:** You can also set your NSFW preferences or boundaries in persona-bound lorebooks or just a global preferences lorebook. Set the entry to the `NSFW` outlet and the model will get the memo. This is also great for building character lorebooks for characters with specific NSFW definitions. Set those entries in their character lorebook to this outlet and make it keyword triggered to fire at the right time.
+- **What it's for:** User-supplied custom character-specific NSFW rules, kinks, hard limits, or content steering that should override or extend the default Mature Content section in the system prompt.
+- **Where it lands:** Near the end of the stack — high-recency for the model.
+- **Tip:** You can also set your NSFW preferences or boundaries in persona-bound lorebooks or just a global preferences lorebook. Set the entry to the `NSFW` outlet and the model will get the memo. This is also great for building character lorebooks for characters with specific NSFW definitions. Set those entries in their character lorebook to this outlet and make it keyword triggered to fire at the right time.
 
 ---
 
