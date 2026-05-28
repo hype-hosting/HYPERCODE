@@ -36,7 +36,7 @@ Both ship the same core narrative voice. The Preset adds structural scaffolding 
 4. Optionally swap in any of the customization options from the [Customization Guide](guides/customization.md).
 
 ### SillyTavern Preset
-1. Download [`presets/v1.0/hypercode-preset.json`](presets/v1.0/hypercode-preset.json).
+1. Download [`presets/v1.0/HYPERCODE-1.0.json`](presets/v1.0/HYPERCODE-1.0.json).
 2. In SillyTavern, open the **API Connections** panel and find the **Chat Completion Presets** dropdown.
 3. Click the import icon and select the JSON file.
 4. Select **HYPERCODE** from the preset dropdown.
@@ -158,7 +158,7 @@ The prompt and the Preset are versioned **independently**.
 | Component | Version | Status | Notes |
 |-----------|---------|--------|-------|
 | HYPERCODE Prompt | [v1.0](prompts/v1.0/hypercode.md) | **Current** | Bumps to v1.1 only when the prompt content itself changes. |
-| HYPERCODE Preset | [v1.0](presets/v1.0/hypercode-preset.json) | **Current** | First public release of the Preset. |
+| HYPERCODE Preset | [v1.0](presets/v1.0/HYPERCODE-1.0.json) | **Current** | First public release of the Preset. |
 
 ### What's New in This Release
 
