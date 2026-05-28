@@ -97,7 +97,7 @@ In the Preset, the assembled order looks like this:
 
 Outlets are SillyTavern's prompt-injection slots — named hooks the Preset exposes so your lorebook entries can be dropped into specific points of the assembled stack. To wire a lorebook entry to an Outlet, set the entry's **Position** to *outlet* and the **Outlet Name** field to the exact name listed below.
 
-> **In raw JSON, the lorebook entry needs `"position": 7` and `"outletName": "<name>"`.**
+> **CRITICAL: OUTLETS ARE CASE-SENSITIVE. I.E., you have to put `CustomSetting`, not `customsetting` when you are assigning your lorebook entries. Also, outlets will not appear to be populated on the prompt section of your ST setup. It'll just say which one it is (like {{outlet::CustomSetting}}). But the outlet will be populated in the prompt that is sent to the AI at runtime. You can use Prompt Inspector to check and make sure if you're doubtful.**
 
 Outlets are optional. An unwired Outlet renders as inert — the stack continues to work normally. But populating them is where the Preset earns its keep.
 
