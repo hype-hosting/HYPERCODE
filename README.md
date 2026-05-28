@@ -4,9 +4,9 @@
 
 # HYPERCODE
 
-**A premium roleplay system prompt framework by Hyperion.**
+**A premium roleplay prompt architecture by Hyperion.**
 
-HYPERCODE is a modular, tiered system prompt designed for immersive, literary-quality interactive roleplay with AI. Whether you need a full cinematic narrative engine or a lean token-efficient skeleton, there's a version built for your setup.
+HYPERCODE is a literary-quality system prompt for immersive, cinematic AI roleplay — released in two forms: a **standalone prompt** that drops into any frontend on any model, and the **HYPERCODE Preset for SillyTavern**, which wraps the same prompt in a fully modular prompt stack with documented injection points called Outlets.
 
 [![Ko-fi](https://img.shields.io/badge/Support%20on-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/hype)
 [![Discord](https://img.shields.io/badge/Join%20the-Discord-5865F2?logo=discord&logoColor=white)](https://discord.gg/therealhype)
@@ -16,33 +16,161 @@ HYPERCODE is a modular, tiered system prompt designed for immersive, literary-qu
 
 ## What's Included
 
-HYPERCODE ships in three tiers. Pick the one that fits your setup, or start with Core and build up.
+Two deliverables, same prompt at the core, different surfaces around it.
 
-| Tier | File | What It Is | Best For |
-|------|------|-----------|----------|
-| **Premium** | [`premium.md`](prompts/v1.0/premium.md) | Full-featured prompt with structural depth, tonal philosophy, and narrative discipline. | Users who want a polished, ready-to-go cinematic roleplay experience. |
-| **Essentials** | [`essentials.md`](prompts/v1.0/essentials.md) | Compact and effective. Covers all the fundamentals in a token-efficient package. | Smaller context windows, mobile setups, or users who prefer brevity. |
-| **Core** | [`core.md`](prompts/v1.0/core.md) | Stripped-down framework. Style-agnostic — bring your own voice, POV, and format. | Experienced users who want a foundation to customize entirely. |
+| Form | File | Use This If |
+|------|------|-------------|
+| **Standalone Prompt** | [`hypercode.md`](prompts/v1.0/hypercode.md) | You're on any frontend or model that takes a system prompt — ChatGPT, Claude, OpenRouter, local models, mobile clients, anything. |
+| **HYPERCODE Preset** | [`HYPERCODE-1.0.json`](presets/v1.0/HYPERCODE-1.0.json) | You're on SillyTavern and want the full prompt stack with Outlet-based modular customization. |
 
-All three tiers are platform-agnostic and work with any frontend or model that accepts a system prompt.
+Both ship the same core narrative voice. The Preset adds structural scaffolding and runtime injection slots that the standalone can't express on its own.
+
+---
+
+## Quick Start
+
+### Standalone (any platform)
+1. Open [`prompts/v1.0/hypercode.md`](prompts/v1.0/hypercode.md).
+2. Copy the contents of the fenced code block.
+3. Paste into your platform's system prompt field.
+4. Optionally swap in any of the customization options from the [Customization Guide](guides/customization.md).
+
+### SillyTavern Preset
+1. Download [`presets/v1.0/hypercode-preset.json`](presets/v1.0/hypercode-preset.json).
+2. In SillyTavern, open the **API Connections** panel and find the **Chat Completion Presets** dropdown.
+3. Click the import icon and select the JSON file.
+4. Select **HYPERCODE** from the preset dropdown.
+5. (Recommended) Build a character lorebook with Outlet entries — see the [Outlets](#outlets) section below.
+
+---
+
+## The Prompt Stack
+
+HYPERCODE isn't a single block of text. It's a **stack** — layered prompt fragments assembled in a fixed order so that the model sees character, world, lore, history, and runtime instructions arranged for maximum coherence and recency.
+
+In the Preset, the assembled order looks like this:
+
+```
+   ╭─── IDENTITY ───────────────────────────────────────────╮
+   │  System Prompt               ← HYPERCODE core          │
+   │    ├─ <Custom_Setting>       ← Outlet: CustomSetting   │
+   │    └─ <Custom_Tone>          ← Outlet: CustomTone      │
+   ╰────────────────────────────────────────────────────────╯
+                            │
+                            ▼
+   ╭─── WORLD & CHARACTER ──────────────────────────────────╮
+   │  World Overview              ← Outlet: WorldOverview   │
+   │  World Info (before)                                   │
+   │  Character Description                                 │
+   │  Character Personality                                 │
+   │  Scenario                                              │
+   │  Persona Description                                   │
+   │  Persona Lorebook            ← Outlet: persona         │
+   │  World Info (after)                                    │
+   ╰────────────────────────────────────────────────────────╯
+                            │
+                            ▼
+   ╭─── MEMORY & HISTORY ───────────────────────────────────╮
+   │  Chat Lore                   ← Outlet: LTM             │
+   │  Chat Examples                                         │
+   │  Chat History                                          │
+   ╰────────────────────────────────────────────────────────╯
+                            │
+                            ▼
+   ╭─── RUNTIME & SAFETY ───────────────────────────────────╮
+   │  Commands                    ← Outlet: command         │
+   │  NSFW                        ← Outlet: NSFW            │
+   │  System Note                 ← Final reinforce         │
+   ╰────────────────────────────────────────────────────────╯
+```
+
+### Why It's Built This Way
+
+- **Separation of concerns.** Identity sets the voice. World & Character grounds the scene. Memory & History anchors continuity. Runtime & Safety reinforces the rules at the moment of generation. Each band is editable without breaking the others.
+- **Layered overrides.** Defaults are baked in. User-specific customizations layer on top via Outlets without ever touching the base prompt.
+- **Late-stack reinforcement.** Critical guardrails — narrator identity, content rules, anti-fourth-wall reminders — sit near the end of the stack so the model encounters them closest to its generation moment. Recency bias is leveraged on purpose.
+- **Portability.** Because lore lives in the lorebook (not the prompt), the same Preset works across hundreds of characters and worlds without modification. The prompt is the chassis; the lorebook is the cargo.
+
+---
+
+## Outlets
+
+Outlets are SillyTavern's prompt-injection slots — named hooks the Preset exposes so your lorebook entries can be dropped into specific points of the assembled stack. To wire a lorebook entry to an Outlet, set the entry's **Position** to *outlet* and the **Outlet Name** field to the exact name listed below.
+
+> **In raw JSON, the lorebook entry needs `"position": 7` and `"outletName": "<name>"`.**
+
+Outlets are optional. An unwired Outlet renders as inert — the stack continues to work normally. But populating them is where the Preset earns its keep.
+
+### `CustomSetting`
+**What it's for:** A 1–2 sentence description of your roleplay's setting (where, when, what kind of world). Plain text only — no XML, no markdown headers.
+**Where it lands:** Inside the system prompt's `<Custom_Setting>` block, near the top of the stack.
+**Example content:**
+> *The roleplay is set in Ravenwood Estate, Northumberland, England, 1761 — a Gothic castle and revolutionary medical research institution against the backdrop of the Seven Years' War.*
+
+### `CustomTone`
+**What it's for:** A few sentences describing the prose tone, mood, and atmospheric ground rules you want the model to maintain. Plain text only.
+**Where it lands:** Inside the system prompt's `<Custom_Tone>` block, near the top of the stack.
+**Example content:**
+> *Maintain Gothic horror darkness with plausible deniability. Supernatural elements remain ambiguous and psychologically grounded. Horror comes from uncertainty, not spectacle.*
+
+### `WorldOverview`
+**What it's for:** A full, structured overview of your world — setting, premise, genre, factions, themes, technological limits, etc. This is the high-altitude lore the model needs before scene-level entries fire.
+**Where it lands:** Position #2 in the stack, immediately after the system prompt.
+**Tip:** One per world. Keep it under ~1000 tokens. Use headed sections (Setting, Premise, Atmosphere, Themes, etc.) rather than freeform paragraphs.
+
+### `persona`
+**What it's for:** Lore specific to the user's persona — backstory, relationships, identity details, anything the model should know about *who the user is* in this world.
+**Where it lands:** Right after the standard Persona Description block, allowing layered persona context.
+**Tip:** Keep flexible — many users swap personas across characters. Bind this to specific personas via SillyTavern's persona lorebook binding if needed.
+
+### `LTM`
+**What it's for:** Long-term memory — summaries of past events, established relationships, prior scenes the model should treat as history. The "previously, on this story" injection.
+**Where it lands:** Just before chat history, framed by the Preset as established past events.
+**Tip:** Use a summary extension or update manually as scenes accumulate. Truncate aggressively.
+
+### `command`
+**What it's for:** Runtime command definitions — `!commands` the user can invoke mid-chat to trigger temporary behavioral modifications (perspective shifts, scene jumps, character swaps, etc.).
+**Where it lands:** Late in the stack, just before NSFW and System Note, so commands are fresh in the model's recent context.
+**Tip:** Use sparingly. One or two well-defined commands beat a dozen forgotten ones.
+
+### `NSFW`
+**What it's for:** User-supplied custom NSFW rules, kinks, hard limits, or content steering that should override or extend the default Mature Content section in the system prompt.
+**Where it lands:** Depth-4 injection near the end of the stack — high-recency for the model.
+**Note:** The standalone prompt already contains a default Mature Content policy. This Outlet is for **adding** user-specific rules on top of that baseline, not replacing it.
+
+---
 
 ## Customization
 
-HYPERCODE is designed to be modular. The [**Customization Guide**](guides/customization.md) provides drop-in replacements for perspective, tense, response length, prose tone, dialogue style, and mature content handling. Swap the pieces you want, keep the rest at their defaults.
+The [**Customization Guide**](guides/customization.md) covers two paths to the same destination:
+
+- **Direct edits** — line-swap replacements for POV, tense, response length, prose tone, dialogue style, and mature content handling. Use this if you're on the standalone prompt.
+- **Outlet edits** — the same customization surface, but expressed as lorebook entries through `CustomSetting` and `CustomTone`. Use this if you're on the Preset.
+
+Either way, the customization model is the same: swap the pieces you care about, keep the rest at their defaults.
+
+---
 
 ## Versions
 
-HYPERCODE is actively maintained. Current and past versions are available in the [`prompts/`](prompts/) directory.
+The prompt and the Preset are versioned **independently**.
 
-| Version | Status | Notes |
-|---------|--------|-------|
-| [v1.0](prompts/v1.0/) | **Current** | Initial public release. |
+| Component | Version | Status | Notes |
+|-----------|---------|--------|-------|
+| HYPERCODE Prompt | [v1.0](prompts/v1.0/hypercode.md) | **Current** | Bumps to v1.1 only when the prompt content itself changes. |
+| HYPERCODE Preset | [v1.0](presets/v1.0/hypercode-preset.json) | **Current** | First public release of the Preset. |
+
+### What's New in This Release
+
+- **HYPERCODE Preset launches** — full SillyTavern preset with seven Outlets and a documented assembled stack order.
+- **Premium → HYPERCODE.** The prompt formerly known as "Premium" is now simply **HYPERCODE**, and is the actively maintained reference prompt going forward.
+- **Essentials and Core archived.** Both have been moved to [`prompts/v1.0/archive/`](prompts/v1.0/archive/). They remain available for reference and use, but will not receive further updates.
 
 ---
 
 ## The Full Experience
 
-HYPERCODE is one piece of a larger ecosystem. If you want to experience what these prompts can really do when paired with handcrafted characters, deep worldbuilding, and a curated community check out below:
+HYPERCODE is one piece of a larger ecosystem. If you want to experience what these prompts can really do when paired with handcrafted characters, deep worldbuilding, and a curated community — check below:
 
 **Timeless Tavern** is a SillyTavern instance hosted by me, Hyperion. Multi-user, multi-world, and running on a prompt architecture that goes well beyond what's published here. Access is through the [**Discord**](https://discord.gg/therealhype).
 
@@ -61,7 +189,7 @@ HYPERCODE is released under [CC BY-NC-SA 4.0](LICENSE). You're free to use, shar
 
 ## Contributing
 
-Found something that could be better? Have a suggestion for the Customization Guide? Open an issue or submit a PR. Community contributions that improve the framework are welcome.
+Found something that could be better? Have a suggestion for the Customization Guide or the Outlets reference? Open an issue or submit a PR. Community contributions that improve the framework are welcome.
 
 If you build something cool with HYPERCODE, I'd love to hear about it — drop into the [Discord](https://discord.gg/therealhype) and share.
 

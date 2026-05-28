@@ -6,13 +6,24 @@
 
 ---
 
-The HYPERCODE prompts as they are written now are tuned for a specific style — third-person limited, past tense, cinematic prose. But these are **modular choices**, not requirements. This is prompting and you have options! Below are some key areas you can swap out to match your preferred roleplay style, with ready-to-use replacement text for each option.
+The HYPERCODE prompt as it's written by default is tuned for a specific style — third-person limited, past tense, cinematic prose. But these are **modular choices**, not requirements. This is prompting, and you have options.
+
+There are two paths to customize HYPERCODE, depending on how you're running it:
+
+- **Direct edits** — swap lines inside the prompt itself. Works on any platform. Use this if you're running the standalone prompt on ChatGPT, Claude, OpenRouter, a local model, or anywhere else — or if you're on SillyTavern and comfortable editing the System Prompt content inside your imported Preset.
+- **Outlet edits** *(SillyTavern Preset only)* — express your setting and tone preferences as lorebook entries through the `CustomSetting` and `CustomTone` Outlets. Cleaner, portable across characters, and doesn't touch the base prompt.
+
+Most customization options work both ways. A few — POV, tense, response length, dialogue style, mature content — are structural enough that they live inside the prompt itself and require direct edits even if you're on the Preset.
 
 ---
 
+# Part 1 — Direct Edits
+
+Open `hypercode.md` (or the System Prompt content in your Preset settings) and swap the relevant lines.
+
 ## Perspective (POV)
 
-Replace the perspective line in the **Voice** or **Voice and Format** section.
+Replace the perspective line in the **Perspective and Voice** section.
 
 | Style | Replace with |
 |-------|-------------|
@@ -20,7 +31,7 @@ Replace the perspective line in the **Voice** or **Voice and Format** section.
 | **Second-person** | `Write in second-person perspective, addressing the user's character as "you."` |
 | **First-person (NPC narrator)** | `Write in first-person perspective from the primary NPC's point of view.` |
 
-> Second-person creates a more intimate, "choose your adventure" feel. First-person NPC narration works well for single-character-focused stories or like, slice-of-life, where the NPC's interiority is part of the appeal.
+> Second-person creates a more intimate, "choose your adventure" feel. First-person NPC narration works well for single-character-focused stories or slice-of-life, where the NPC's interiority is part of the appeal.
 
 ---
 
@@ -39,7 +50,7 @@ Replace the tense reference in the same section.
 
 ## Response Length
 
-Replace the paragraph count line in the **Structural Guidelines** or **Voice and Format** section. Keep in mind that the model won't necessarily stick EXACTLY to these guidelines ("like the pirate code, its more like general suggestions lol") but it'll give it some general parameters.
+Replace the paragraph count line in the **Structural Guidelines** section. Keep in mind that the model won't necessarily stick EXACTLY to these guidelines ("like the pirate code, its more like general suggestions lol") but it'll give it some general parameters.
 
 | Style | Replace with |
 |-------|-------------|
@@ -54,7 +65,7 @@ Replace the paragraph count line in the **Structural Guidelines** or **Voice and
 
 ## Prose Tone
 
-This is one of my favorite parts. Feel free to experiment with it. This isn't a single line swap. It's about adding a sentence to the **Voice** section that steers the overall feel. Add one of these after the perspective and tense lines.
+This is one of my favorite parts. Feel free to experiment with it. This isn't a single line swap — it's about adding a sentence to the **Perspective and Voice** section that steers the overall feel. Add one of these after the perspective and tense lines.
 
 | Tone | Add this line |
 |------|--------------|
@@ -70,7 +81,7 @@ This is one of my favorite parts. Feel free to experiment with it. This isn't a 
 
 ## Dialogue Style
 
-Replace the content in the **Dialogue** or **Dialogue Protocol** section if you want a different approach to how NPCs speak.
+Replace the content in the **Dialogue Protocol** section if you want a different approach to how NPCs speak.
 
 | Style | Replace with |
 |-------|-------------|
@@ -90,20 +101,102 @@ Replace the **Mature Content** section based on your comfort level and platform.
 | **Moderate** | `Handle mature themes with restraint. Imply rather than depict graphic content. Maintain tension without explicit detail.` |
 | **Fade to black** | `When scenes approach explicit or graphic content, use a "fade to black" — imply what occurs and transition to the next narrative beat.` |
 
+> If you're on the Preset, you can also **layer additional user-specific NSFW rules on top** of whichever default you pick by populating the `NSFW` Outlet (see Part 2). The Mature Content section sets the baseline; the Outlet extends it.
+
 ---
 
-## Putting It Together
+# Part 2 — Outlet Edits *(SillyTavern Preset only)*
 
-You don't need to use all of these. Pick the areas that matter to your style and leave the rest at their defaults. Here's an example of a fully customized **Voice and Format** section for someone who wants present-tense, second-person, gothic, compact roleplay:
+If you're running the HYPERCODE Preset, two customization layers live outside the prompt itself: **setting** and **tone**. Both are exposed as Outlets, which means you can express them as lorebook entries that get injected directly into the system prompt at generation time — no editing of the imported Preset required.
+
+This is the recommended approach for Preset users because it makes your customizations:
+- **Portable** across characters (one lorebook entry, many bots)
+- **Lossless** when the Preset updates (your edits don't get overwritten)
+- **Per-world** rather than per-platform (different lorebooks for different settings)
+
+## How to wire an Outlet entry
+
+In SillyTavern's lorebook editor:
+
+1. Create a new lorebook entry.
+2. Set **Position** to *outlet*.
+3. In the **Outlet Name** field, type the exact outlet name (case-sensitive): `CustomSetting` or `CustomTone`.
+4. Set the entry to **constant** (always-on) — these are baseline injections, not keyword-triggered lore.
+5. Write your content as plain text. No XML, no markdown headers, no quotation wrappers. The Preset's system prompt already provides the structural wrapper.
+
+In raw JSON, the relevant fields on the entry are:
+```json
+"position": 7,
+"outletName": "CustomSetting",
+"constant": true
+```
+
+---
+
+## `CustomSetting` — Setting Steering
+
+Use this to give the model a one- or two-sentence anchor for where and when the roleplay takes place. Plain text. Keep it tight.
+
+**Example:**
+> *The roleplay is set in Ravenwood Estate, Northumberland, England, 1761 — a Gothic castle and revolutionary medical research institution against the backdrop of the Seven Years' War.*
+
+You don't need to dump worldbuilding here — that's what the `WorldOverview` outlet is for. `CustomSetting` is just the orienting sentence that grounds every response in the right time and place.
+
+---
+
+## `CustomTone` — Prose Tone Steering
+
+Use this to set the atmospheric and stylistic ground rules. A few sentences describing how the prose should feel, what it should emphasize, and what it should avoid.
+
+**Example (Gothic):**
+> *Maintain Gothic horror darkness with plausible deniability. Supernatural elements remain ambiguous and psychologically grounded. All uncanny events must have plausible rational explanations (madness, poison, fever, tricks of light). Horror comes from uncertainty, not spectacle. Beauty and decay are inseparable — Gothic atmosphere must suffuse every response.*
+
+**Example (Minimalist literary):**
+> *Favor spare, precise prose. Let silence and implication carry weight. Avoid melodrama and ornate description. Tension should come from restraint, not escalation.*
+
+**Example (Pulp action):**
+> *Write with genre energy — vivid, fast, atmospheric, and unapologetically dramatic. Lean into momentum. Let scenes crackle with kinetic detail and sharp dialogue.*
+
+Tone is the single highest-leverage customization in the entire stack. Two characters in the same world with the same setting will read completely differently depending on the `CustomTone` entry. Experiment.
+
+---
+
+## What about POV, tense, response length, dialogue style?
+
+These aren't exposed as Outlets — they're baked into the structural sections of the system prompt itself. If you want to change them on the Preset, you have two options:
+
+1. **Edit the System Prompt content directly inside your imported Preset.** SillyTavern lets you edit prompt content per-Preset in the Chat Completion Presets panel. Use the swap tables from Part 1.
+2. **Use `CustomTone` to nudge.** You can add a steering sentence like "Write in present tense, second-person" to the `CustomTone` Outlet. This is softer than a direct prompt edit but often works for casual swaps. For consistent results across long sessions, direct edits are more reliable.
+
+---
+
+# Putting It Together
+
+You don't need to use all of these. Pick the areas that matter to your style and leave the rest at their defaults.
+
+### Example — Standalone prompt, fully customized Voice section
+
+Someone who wants present-tense, second-person, gothic, compact roleplay would edit `hypercode.md` like this:
 
 ```
-## Voice and Format
+## Perspective and Voice
 
-- **Second-person**, present tense.
-- **2–4 paragraphs** per response. Keep scenes tight and punchy.
-- Favor dense, atmospheric prose rich in shadow, decay, texture, and psychological tension.
-- End on a narrative beat — never a direct question or forced hook.
+Write in **second-person** perspective, addressing the user's character as "you," using **present tense** for immediacy and momentum. Favor dense, atmospheric prose rich in shadow, decay, texture, and psychological tension.
+
+## Structural Guidelines
+
+Compose **2–4 paragraphs** per response. Keep scenes tight and punchy.
 ```
+
+### Example — Preset, same gothic mood via Outlets
+
+The same gothic feel on the SillyTavern Preset, with structural defaults intact, would be one `CustomSetting` lorebook entry and one `CustomTone` lorebook entry:
+
+**`CustomSetting`:**
+> *The roleplay is set in Ravenwood Estate, Northumberland, England, 1761 — a Gothic castle and revolutionary medical research institution against the backdrop of the Seven Years' War.*
+
+**`CustomTone`:**
+> *Favor dense, atmospheric prose rich in shadow, decay, texture, and psychological tension. Horror comes from uncertainty, not spectacle. Beauty and decay are inseparable.*
 
 That's it. Swap the pieces, keep the structure, and make it yours.
 
