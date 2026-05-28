@@ -156,7 +156,7 @@ The prompt and the Preset are versioned **independently**.
 
 | Component | Version | Status | Notes |
 |-----------|---------|--------|-------|
-| HYPERCODE Prompt | [v1.0](prompts/v1.0/hypercode.md) | **Current** | Bumps to v1.1 only when the prompt content itself changes. |
+| HYPERCODE Prompt | [v1.0](prompts/v1.0/hypercode.md) | **Current** | Base system prompt. |
 | HYPERCODE Preset | [v1.0](presets/v1.0/HYPERCODE-1.0.json) | **Current** | First public release of the Preset. |
 
 ### What's New in This Release
