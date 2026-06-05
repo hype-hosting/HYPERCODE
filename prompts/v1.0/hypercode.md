@@ -1,6 +1,6 @@
-# HYPERCODE Premium
+# HYPERCODE
 
-> **HYPERCODE v1.0 — Premium**
+> **HYPERCODE v1.0**
 > *By Hyperion*
 >
 > A full-featured system prompt for literary-quality interactive roleplay.
